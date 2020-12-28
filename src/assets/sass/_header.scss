@@ -1,0 +1,156 @@
+
+
+.number-block{
+	display: flex;
+	align-items: center;
+}
+
+.header{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	padding: 5px 0;
+	z-index: 50;
+	background-color: $wc;
+	.row{
+		justify-content: space-between;
+	}
+	&__phone-icon{
+		margin-right: 5px;
+		@include to(992px){
+			margin-right: 0px;
+
+		}
+	}
+	&__tel{
+		font-size: 14px;
+		display: flex;
+		align-items: center;
+		letter-spacing: 0.2em;
+		color: $text;
+		text-transform: uppercase;
+		text-decoration: none;
+		span{
+			@include to(576px){
+				display: none;
+			}
+		}
+	}
+}
+
+.lang-list{
+	display: flex;
+	align-items: center;
+	&__item.active{
+		&:hover{
+			&::after{
+				opacity: 1;	
+			}
+		}
+		color: $mc;
+			&::after{
+				opacity: 1;	
+			}
+	}
+	&__item{
+		position: relative;
+		padding-top: 6px;
+		margin: 0 2.6vw 0 0;
+		width: rem(60px);
+		height: 50px;
+		line-height: 50px;
+		font-size: 24;
+		text-align: center;
+		text-transform: uppercase;
+		@include to(992px) {
+			font-size: 14px;
+		}
+		@include to(576px){
+			height: 40px;
+			line-height: 40px;
+
+		}
+		&:hover{
+			cursor: pointer;
+			&::after{
+				opacity: 0.4;
+
+			}
+		}
+		&::after{
+			position: absolute;
+			top: 0;
+			left: 0;
+			opacity: 0;
+			z-index: -1;
+			width: 100%;
+			height: 100%;
+			background-color: $mc3;
+			content: '';
+			clip-path: polygon(0 30%, 100% 0, 100% 100%, 0% 100%);
+			transition: all 0.3s
+		}
+	}
+}
+.header__button-menu{
+	margin-right: 5px;
+	@include from(577px){
+		display: none;
+	}
+}
+.menu-button{
+	display: flex;
+	align-items: center;
+	border: none;
+	background-color: transparent;
+	&__text{
+		font-size: 10px;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+	}
+}
+
+.site-menu-btn{
+	position: fixed;
+	top: 50%;
+	right: 0;
+	z-index: 95;
+	padding: 0;
+	height: 40px;
+	width: 130px;
+	transform: rotate(-90deg) translateY(130%);
+	.menu-button__text{
+		font-size: 17px;
+		line-height: 1em;
+
+	}
+	.svg-wrap{
+		transform: rotate(90deg);
+	}
+	@include to(576px){
+		display: none;
+	}
+}
+.site-call-btn{
+	position: fixed;
+	top: 50%;
+	left: 1%;
+	z-index: 95;
+	padding: 0;
+	height: 40px;
+	line-height: 1em;
+	transform: rotate(-90deg) translateX(-50%);
+	transform-origin: left center;
+	border: none;
+	background-color: transparent;
+	&__text {
+		font-size: 17px;
+		line-height: 1em;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+	}
+	@include to(576px){
+		display: none;
+	}
+}

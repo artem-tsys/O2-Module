@@ -1,0 +1,159 @@
+extends ../layout/main
+
+
+
+block meta
+	title= htmlWebpackPlugin.files.css
+	meta(name='description', content='')
+block head
+		link(rel='stylesheet', href=htmlWebpackPlugin.files.css[0])
+		link(rel='stylesheet', href='/assets/static/style.min.css')
+block scripts
+		script(src="./assets/static/jquery-3.3.1.min.js")
+		script(src=htmlWebpackPlugin.files.js[1])
+		script(src="./assets/static/config.js")
+
+block content
+	.threeD
+		#desktop
+			img.compas(src='/assets/img/choose-apartment/nav.png', alt='compas')
+		.preloader
+			.logo
+				img(src='assets/img/main/o2_logo.svg', alt='O2 Logo')
+				p.preloader__logo-text 3D module
+			.loader
+				each val in [0,1,2,3,4,5,6,7,8,9]
+					span.loader-item
+			.preloader__info Loading...
+		.info.info__hover.js-info__hover
+			.info__text.info__build
+				span.js-info__build--text Будинок №
+				span.js-info__build
+			.info__text.info__section
+				span.js-info__section--text секция
+				span.js-info__section
+			.info__text.info__floor
+				span.js-info__floor--text поверх
+				span.js-info__floor
+			.info__text.info__room
+				span.js-info__room--text квартир
+				span.js-info__room
+			.info__text.info__sale.active будинок тимчасово не продається
+			.info__text.info__error
+		.info.info__active.js-info__active
+			.close.js__zoom-house-closed
+			.info__text.info__build
+				span.js-info__build--text
+				span.js-info__build
+			.info__text.info__section
+				span.js-info__section--text
+				span.js-info__section
+			.info__text.info__floor
+				span.js-info__floor--text
+				span.js-info__floor
+			.info__text.info__room
+				span.js-info__room--text
+				span.js-info__room
+			// <button type="button" class="info__button js-info__button">Обрати квартиру</button>
+			.info__text.info__sale.active будинок тимчасово не продається
+			a.info__button.js-info__button(href='#')
+		.treeD__plane.js-treeD__plane
+			.select-apartmens
+				.wrapper
+					.close.js-close__apart
+					.select-apartmens-wrap
+						.select-apartmens-top
+							a.select-button(href='/vybor-sektsyy/')
+								svg.select-button__icon.select-button__icon_rotate(xmlns='http://www.w3.org/2000/svg', width='444.819', height='444.819', viewBox='0 0 444.819 444.819')
+									path(d='M352.025 196.712L165.884 10.848C159.029 3.615 150.469 0 140.187 0s-18.842 3.619-25.697 10.848L92.792 32.264c-7.044 7.043-10.566 15.604-10.566 25.692 0 9.897 3.521 18.56 10.566 25.981L231.545 222.41 92.786 361.168c-7.042 7.043-10.564 15.604-10.564 25.693 0 9.896 3.521 18.562 10.564 25.98l21.7 21.413c7.043 7.043 15.612 10.564 25.697 10.564 10.089 0 18.656-3.521 25.697-10.564L352.025 248.39c7.046-7.423 10.571-16.084 10.571-25.981.001-10.088-3.525-18.654-10.571-25.697z')
+								svg.select-button__icon.select-button__icon_rotate(xmlns='http://www.w3.org/2000/svg', width='444.819', height='444.819', viewBox='0 0 444.819 444.819')
+									path(d='M352.025 196.712L165.884 10.848C159.029 3.615 150.469 0 140.187 0s-18.842 3.619-25.697 10.848L92.792 32.264c-7.044 7.043-10.566 15.604-10.566 25.692 0 9.897 3.521 18.56 10.566 25.981L231.545 222.41 92.786 361.168c-7.042 7.043-10.564 15.604-10.564 25.693 0 9.896 3.521 18.562 10.564 25.98l21.7 21.413c7.043 7.043 15.612 10.564 25.697 10.564 10.089 0 18.656-3.521 25.697-10.564L352.025 248.39c7.046-7.423 10.571-16.084 10.571-25.981.001-10.088-3.525-18.654-10.571-25.697z')
+								span.select-button__text Обрати квартиру
+							.select-floor
+								p.select-floor__text 2 поверх
+								a.select-floor__button(href='https://odva.smarto.com.ua/floor/?floor=3&house=1')
+									svg.select-floor__icon.select-floor__icon_top(xmlns='http://www.w3.org/2000/svg', width='444.819', height='444.819', viewBox='0 0 444.819 444.819')
+										path(d='M352.025 196.712L165.884 10.848C159.029 3.615 150.469 0 140.187 0s-18.842 3.619-25.697 10.848L92.792 32.264c-7.044 7.043-10.566 15.604-10.566 25.692 0 9.897 3.521 18.56 10.566 25.981L231.545 222.41 92.786 361.168c-7.042 7.043-10.564 15.604-10.564 25.693 0 9.896 3.521 18.562 10.564 25.98l21.7 21.413c7.043 7.043 15.612 10.564 25.697 10.564 10.089 0 18.656-3.521 25.697-10.564L352.025 248.39c7.046-7.423 10.571-16.084 10.571-25.981.001-10.088-3.525-18.654-10.571-25.697z')
+							a.select-button(href='https://odva.smarto.com.ua/filter/')
+								img.select-button__icon.select-button__icon_long(src='https://odva.smarto.com.ua/wp-content/themes/o2/assets/img/choose-apartment/filter.png', alt='icon')
+								span.select-button__text Фільтр
+						// сюда вносить ответ от сервера с разметкой плана этажа
+						.apartmens-plan-wrap
+							style.
+								.svg__polygon {
+									opacity: 1;
+									fill: transparent;
+								}
+
+								.apartmens-plan-wrap {
+									/*  height: 80%!important; */
+								}
+							svg#floor(viewBox='0 0  1250 626.46598905395', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink')
+								image(x='0', y='0', height='100%', width='100%', style='overflow:visible;', xlink:href='https://odva.smarto.com.ua/wp-content/uploads/2018/09/floor_2-5.png')
+								style.
+									.plan-appartment {
+										opacity: 0.55;
+									}
+
+									.plan-appartment:hover {
+										opacity: 0.8;
+									}
+								a.plan-floor-appartment-link.svg__polygon.floor-svg__grup(xlink:href='https://odva.smarto.com.ua/flat/?flat=388&type=k1k1', data-flats-hover='1', data-number='2', data-square='32', data-livsquare='17', data-flats='1')
+									polygon.plan-appartment(points='624,32,886,30,886,277,628,281')
+								a.plan-floor-appartment-link.svg__polygon.floor-svg__grup(xlink:href='https://odva.smarto.com.ua/flat/?flat=388&type=k1k2', data-flats-hover='2', data-number='2', data-square='34', data-livsquare='16', data-flats='1')
+									polygon.plan-appartment(points='887,30,1130,30,1129,282,885,279')
+								a.plan-floor-appartment-link.svg__polygon.floor-svg__grup(xlink:href='https://odva.smarto.com.ua/flat/?flat=388&type=k1k3', data-flats-hover='3', data-number='2', data-square='35', data-livsquare='21', data-flats='1')
+									polygon.plan-appartment(points='768,607,1011,604,1009,357,761,357')
+								a.plan-floor-appartment-link.svg__polygon.floor-svg__grup(xlink:href='https://odva.smarto.com.ua/flat/?flat=388&type=k1k4', data-flats-hover='4', data-number='2', data-square='35', data-livsquare='21', data-flats='1')
+									polygon.plan-appartment(points='517,606,763,603,762,354,518,356')
+								a.plan-floor-appartment-link.svg__polygon.floor-svg__grup(xlink:href='https://odva.smarto.com.ua/flat/?flat=388&type=k1k5', data-flats-hover='5', data-number='2', data-square='35', data-livsquare='21', data-flats='1')
+									polygon.plan-appartment(points='272,604,273,355,517,356,514,605')
+								a.plan-floor-appartment-link.svg__polygon.floor-svg__grup(xlink:href='https://odva.smarto.com.ua/flat/?flat=388&type=k1k6', data-flats-hover='6', data-number='2', data-square='36', data-livsquare='21', data-flats='1')
+									polygon.plan-appartment(points='274,27,518,30,518,281,273,283')
+								a.plan-floor-appartment-link.svg__polygon.floor-svg__grup(xlink:href='https://odva.smarto.com.ua/flat/?flat=388&type=k2k1', data-flats-hover='7', data-number='2', data-square='65', data-livsquare='36', data-flats='2')
+									polygon.plan-appartment(points='1131,29,1260,32,1261,565,1257,565,1261,626,1152,626,1152,603,1011,605,1014,283,1129,282')
+								a.plan-floor-appartment-link.svg__polygon.floor-svg__grup(xlink:href='https://odva.smarto.com.ua/flat/?flat=388&type=k3k1', data-flats-hover='8', data-number='2', data-square='85', data-livsquare='54', data-flats='3')
+									polygon.plan-appartment(points='272,602,260,602,260,626,166,626,166,610,22,604,20,13,129,14,130,24,274,26')
+						img.select-apartmens__image(src='https://odva.smarto.com.ua/wp-content/themes/o2/assets/img/choose-apartment/nav.png', alt='image')
+		.js-info__object.info__object
+		.wrapper__first-info.js-first-info
+			.first-info
+				.close.first-info__close.js-first-info__close
+				table
+					tbody
+						tr
+							td
+								img(src='assets/img/Mouse1.png', alt='mouse')
+							td
+								h3 Выберите удобный ракурс
+								p
+									|для просмотра генплана зажав левую
+									wbr
+									|кнопку мыши и перемещая мышь.
+						tr
+							td
+								img(src='assets/img/Mouse2.png', alt='mouse')
+							td
+								h3 Покрутите колесико мыши
+								p чтобы приблизится или отдалится.
+						tr
+							td
+								img(src='assets/img/options1.png', alt='options')
+							td
+								h3 Чтобы выбрать секцию дома
+								p нажмите на него левой кнопкой мыши.
+						tr
+							td
+								img(src='assets/img/options2.png', alt='options')
+							td
+								h3 Также измените ракурс обзора дома
+								p
+									| на следующем уровне. Чтобы выбрать этаж нажмите на него
+									| левой кнопкой мышки
+
+block footer
+	include ../includes/footer.pug
+
+block header
+	include ../includes/header.pug
+

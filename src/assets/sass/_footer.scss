@@ -1,0 +1,30 @@
+.footer{
+  margin-top: 20px;
+  display: block;
+  height: 60px;
+  line-height: 60px;
+  border-top: 1px solid #E4E7F0;
+  .row{
+    @include row-flex();
+    justify-content: space-between;
+    align-items: center;
+    .footer__copy{
+			margin-left: 10px;
+      color: $text;
+      font-size: 12px;
+
+    }
+    .footer__link{
+      display: flex;
+      color: $text;
+      align-items: center;
+      text-decoration: none;
+      font-size: 12px;
+      img{
+				margin-right: 10px;
+        margin-left: 25px;
+        width: 70px;
+      }
+    }
+  }
+}

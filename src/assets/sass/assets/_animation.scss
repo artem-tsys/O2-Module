@@ -1,0 +1,406 @@
+@import "vars";
+
+@keyframes bounce {
+
+  from,
+  20%,
+  53%,
+  80%,
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+
+
+  40%,
+  43% {
+    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    transform: translate3d(0, -30px, 0);
+  }
+
+
+  70% {
+    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    transform: translate3d(0, -15px, 0);
+  }
+
+
+  90% {
+    transform: translate3d(0, -4px, 0);
+  }
+}
+
+.bounce-infinite {
+			fill: #000;
+			animation-name: bounce;
+			animation-duration: 3s;
+			transform-origin: center bottom;
+			animation-iteration-count: infinite;
+}
+
+@keyframes stagger {
+  0% {
+    opacity: 0.7;
+  }
+
+  25% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.stagger {
+  animation-name: stagger;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+  backface-visibility: visible;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(45deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.rotate {
+  animation-name: rotate;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes scaleIn {
+  0% {
+		opacity: 1;
+		transform: scale(1.25);
+  }
+
+  100% {
+		opacity: 1;
+		transform: scale(1);
+  }
+}
+
+.scaleIn {
+	animation-name: scaleIn;
+  animation-duration: 7s;
+  animation-fill-mode: forwards;
+  backface-visibility: visible;
+}
+@keyframes trftr-y {
+  0% {
+		opacity: 1;
+		transform: translateX(0%)
+  }
+
+  33% {
+		opacity: 1;
+		transform: translateX(50%)
+  }
+  100% {
+		opacity: 1;
+		transform: translateX(0%)
+  }
+}
+
+.btn-animation {
+	animation-name: trftr-y;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  backface-visibility: visible;
+}
+
+@keyframes size-block {
+  0% {
+		opacity: 0;
+		width: 1%;
+		height: 1%;
+	}
+	
+  33% {
+		opacity: 1;
+		width: 1%;
+		height: 100%;
+  }
+
+  100% {
+		opacity: 1;
+		width: 100%;
+		height: 100%;
+  }
+}
+
+.decor-block-animation {
+	animation-name: size-block;
+  animation-duration: 2s;
+  animation-delay: 0.3s;
+  animation-fill-mode: forwards;
+	backface-visibility: visible;
+	animation-timing-function: cubic-bezier(.29, 1.11, .61, .96);
+}
+
+@keyframes font-opacity {
+  0% {
+		opacity: 0;
+  }
+
+  100% {
+		opacity: 1;
+  }
+}
+
+.font-opacity {
+	animation-name: font-opacity;
+  animation-duration: 0.25s;
+  animation-delay: 0.5s;
+  animation-fill-mode: forwards;
+  backface-visibility: visible;
+}
+
+.bg-color-animate {
+	animation-name: bg-amimate;
+	animation-duration: 1s;
+	animation-delay: .1s;
+	animation-fill-mode: forwards;
+	backface-visibility: visible;
+	transform-origin: 100% 50%;
+}
+
+@keyframes bg-amimate {
+	0% {
+		transform: scaleX(0);
+	}
+
+	50% {
+		transform: scaleX(1);
+	}
+
+	100% {
+		transform: scaleX(0);
+	}
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.fadeIn {
+  animation-name: fadeIn;
+  animation-duration: 0.4s;
+  animation-fill-mode: forwards;
+  backface-visibility: visible;
+}
+
+@keyframes shake {
+  0%, to {
+    transform: translateZ(0);
+  }
+
+  10%, 30%, 50%, 70%, 90% {
+    transform: translate3d(-10px, 0, 0);
+  }
+
+  30%, 40%, 60%, 80% {
+    transform: translate3d(10px, 0, 0);
+  }
+}
+
+.shake {
+  animation-name: shake;
+  animation-duration: 1s;
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.fadeInLeft {
+  animation-name: fadeInLeft;
+  animation-duration: 0.4s;
+  animation-fill-mode: forwards;
+  backface-visibility: visible;
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.fadeInRight {
+  animation-name: fadeInRight;
+  animation-duration: 0.4s;
+  animation-fill-mode: forwards;
+  backface-visibility: visible;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.fadeInUp {
+  animation-name: fadeInUp;
+  animation-duration: 0.4s;
+  animation-fill-mode: forwards;
+  backface-visibility: visible;
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+to {
+    opacity: 1;
+  }
+}
+
+.fadeIn {
+  animation-name: fadeIn;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  backface-visibility: visible;
+}
+
+@keyframes flipInY {
+  from {
+    transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
+    animation-timing-function: ease-in;
+    opacity: 0;
+  }
+  
+  40% {
+    transform: perspective(400px) rotate3d(0, 1, 0, -20deg);
+    animation-timing-function: ease-in;
+  }
+  
+  60% {
+    transform: perspective(400px) rotate3d(0, 1, 0, 10deg);
+  }
+  
+  80% {
+    transform: perspective(400px) rotate3d(0, 1, 0, -5deg);
+  }
+  
+  to {
+    opacity: 1;
+    transform: perspective(400px);
+  }
+}
+
+.flipInY:not(#some) {
+  z-index: 1;
+  animation-duration: .4s;
+  animation-name: flipInY;
+  animation-fill-mode: forwards;
+  backface-visibility: visible;
+}
+
+@keyframes tada {
+  from {
+    transform: scale3d(1, 1, 1);
+  }
+  
+  10%,
+  20% {
+    transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
+  }
+  
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+  }
+  
+  40%,
+  60%,
+  80% {
+    transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+  }
+  
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+.mfp-3d-unfold {
+  .mfp-content {
+    perspective: 2000px;
+  }
+  
+  .mfp-with-anim {
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+    transform-style: preserve-3d;
+    transform: rotateY(-60deg);
+  }
+  
+  .mfp-bg {
+    opacity: 0;
+    transition: all 0.5s;
+  }
+}
+
+.mfp-ready {
+  .mfp-with-anim {
+    opacity: 1;
+    transform: rotateY(0deg);
+  }
+  
+  .mfp-bg {
+    opacity: 0.8;
+  }
+}
+
+.mfp-removing {
+  .mfp-with-anim {
+    transform: rotateY(60deg);
+    opacity: 0;
+  }
+
+  .mfp-bg {
+    opacity: 0;
+  }
+}
