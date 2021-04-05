@@ -246,7 +246,21 @@ let setting = {
             cam4: {x: 1156, y: 3000, z: -1333},
             cam5: {x: -5544, y: 3000, z: -2625},
             cam6: {x: -13149, y: 3000, z: 4071}
-        }
+        },
+        houseSale: {
+        1: false,
+        2: false,
+        3: true,
+        4: true,
+        5: true,
+        6: true,
+        7: true,
+        8: true,
+        9: true,
+        10: true,
+        11: true,
+        12: true,
+      }
     },
     objects : {
         water: {
@@ -573,6 +587,7 @@ let setting = {
             }
         },
     },
+    
 };
 
 if(setting.type === "desktop"){

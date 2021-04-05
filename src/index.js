@@ -601,8 +601,6 @@ import './assets/sass/main.scss';
 // }
 
 
-
-
 // function checkLanguage() {
 //     if(window.location.pathname === '/en/3d/'){
 //         return 'en'

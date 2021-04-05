@@ -113,7 +113,7 @@ export default function ThreeD(setting,changeFloor2 ) {
         initDirectionalLight(config.directionLight);
         createRoom(config.room);
 
-        load(objects);
+        load(objects, config);
 
         defaultPositionCamera = config.camera.position;
         cam.cam1 = addWindow(config.windowCam.cam1);
@@ -143,21 +143,7 @@ export default function ThreeD(setting,changeFloor2 ) {
     };
 
     async function getHouse() {
-        await fetch(defaultPath + '/assets/static/appartment.json').then(response => response.json()).then(datas => {
-            let data = datas;
-            // let data = JSON.parse(datas);
-            for (let key in data) {
-                for (let sec in data[key]) {
-                    houseInfo['house' + data[key].dom][sec] = data[key][sec];
-                }
-            }
-        })
-        // request for flats/apartments
-        // await $.ajax({
-        //     url: '/wp-content/themes/o2/assets/appData.json',
-        //     // method:'POST',
-        //     // data: {action: 'dataJson'},
-        // }).then(datas => {
+        // await fetch(defaultPath + '/assets/static/appartment.json').then(response => response.json()).then(datas => {
         //     let data = datas;
         //     // let data = JSON.parse(datas);
         //     for (let key in data) {
@@ -166,6 +152,20 @@ export default function ThreeD(setting,changeFloor2 ) {
         //         }
         //     }
         // })
+        // request for flats/apartments
+        await $.ajax({
+            url: '/wp-content/themes/o2/assets/appData.json',
+            // method:'POST',
+            // data: {action: 'dataJson'},
+        }).then(datas => {
+            let data = datas;
+            // let data = JSON.parse(datas);
+            for (let key in data) {
+                for (let sec in data[key]) {
+                    houseInfo['house' + data[key].dom][sec] = data[key][sec];
+                }
+            }
+        })
     }
 
     function addWindow(pos) {
@@ -196,13 +196,13 @@ export default function ThreeD(setting,changeFloor2 ) {
 
 
 //create models
-    async function load(objects) {
+    async function load(objects, config) {
         createWater(objects.water);
         await getHouse();
         pointObj = await loaderObj({url: 'Obj/point'}, null);
         saleObj = await loaderObj({url: 'Obj/sale2'}, null);
         await getPositionObjects(objects);
-        addModel();
+        addModel(config.houseSale);
 
         await loader(objects.landscape);
         await repeat(objects.land);
@@ -470,12 +470,11 @@ export default function ThreeD(setting,changeFloor2 ) {
     }
 
     // create house
-    function addModel() {
+    function addModel(houseSale) {
         let group = new THREE.Group();
         let points = new THREE.Group();
         group.name = 'house';
         points.name = 'points';
-
         let houseModel = {
             type1: {
                 url: 'Obj/house/House_type-1',
@@ -540,7 +539,7 @@ export default function ThreeD(setting,changeFloor2 ) {
                             up: 3000
                         },
                         sale: {
-                            map: path + 'maps/sale/'+ lang +'.jpg',
+                            map: path + 'maps/'+ (houseSale['1'] ? 'sale' : 'no-sale') +'/'+ lang +'.jpg',
                             up: 3500
                         },
                         info: {
@@ -570,7 +569,7 @@ export default function ThreeD(setting,changeFloor2 ) {
                             up: 3000
                         },
                         sale: {
-                            map: path + 'maps/sale/'+ lang +'.jpg',
+                            map: path + 'maps/'+ (houseSale['2'] ? 'sale' : 'no-sale') +'/'+ lang +'.jpg',
                             up: 3500
                         },
                         info: {
@@ -641,7 +640,7 @@ export default function ThreeD(setting,changeFloor2 ) {
                             up: 3000
                         },
                         sale: {
-                            map: path + 'maps/sale/'+ lang +'.jpg',
+                            map: path + 'maps/'+ (houseSale['3'] ? 'sale' : 'no-sale') +'/'+ lang +'.jpg',
                             up: 3500
                         },
                         info: {
@@ -666,7 +665,7 @@ export default function ThreeD(setting,changeFloor2 ) {
                         up: 3000
                     },
                     sale: {
-                        map: path + 'maps/sale/'+ lang +'.jpg',
+                        map: path + 'maps/'+ (houseSale['4'] ? 'sale' : 'no-sale') +'/'+ lang +'.jpg',
                         up: 3500
                     },
                     info: {
@@ -738,7 +737,7 @@ export default function ThreeD(setting,changeFloor2 ) {
                         up: 3000
                     },
                     sale: {
-                        map: path + 'maps/sale/'+ lang +'.jpg',
+                      map: path + 'maps/'+ (houseSale['5'] ? 'sale' : 'no-sale') +'/'+ lang +'.jpg',
                         up: 3500
                     },
                     info: {
@@ -763,7 +762,7 @@ export default function ThreeD(setting,changeFloor2 ) {
                             up: 3000
                         },
                         sale: {
-                            map: path + 'maps/sale/'+ lang +'.jpg',
+                            map: path + 'maps/'+ (houseSale['6'] ? 'sale' : 'no-sale') +'/'+ lang +'.jpg',
                             up: 3500
                         },
                         info: {
@@ -842,7 +841,7 @@ export default function ThreeD(setting,changeFloor2 ) {
                         up: 3000
                     },
                     sale: {
-                        map: path + 'maps/sale/'+ lang +'.jpg',
+                        map: path + 'maps/'+ (houseSale['7'] ? 'sale' : 'no-sale') +'/'+ lang +'.jpg',
                         up: 3500
                     },
                     info: {
@@ -926,7 +925,7 @@ export default function ThreeD(setting,changeFloor2 ) {
                         up: 3000
                     },
                     sale: {
-                        map: path + 'maps/sale/'+ lang +'.jpg',
+                        map: path + 'maps/'+ (houseSale['8']) ? 'sale' : 'no-sale' +'/'+ lang +'.jpg',
                         up: 3500
                     },
                     info: {
@@ -952,7 +951,7 @@ export default function ThreeD(setting,changeFloor2 ) {
                             up: 3000
                         },
                         sale: {
-                            map: path + 'maps/sale/'+ lang +'.jpg',
+                            map: path + 'maps/'+ (houseSale['9'] ? 'sale' : 'no-sale') +'/'+ lang +'.jpg',
                             up: 3500
                         },
                         info: {
@@ -1070,7 +1069,7 @@ export default function ThreeD(setting,changeFloor2 ) {
                         up: 3000
                     },
                     sale: {
-                        map: path + 'maps/sale/'+ lang +'.jpg',
+                        map: path + 'maps/'+ (houseSale['10'] ? 'sale' : 'no-sale') +'/'+ lang +'.jpg',
                         up: 3500
                     },
                     info: {
@@ -1249,7 +1248,7 @@ export default function ThreeD(setting,changeFloor2 ) {
                         up: 3000
                     },
                     sale: {
-                        map: path + 'maps/sale/'+ lang +'.jpg',
+                        map: path + 'maps/'+ (houseSale['11'] ? 'sale' : 'no-sale') +'/'+ lang +'.jpg',
                         up: 3500
                     },
                     info: {
@@ -1273,7 +1272,7 @@ export default function ThreeD(setting,changeFloor2 ) {
                         up: 3000
                     },
                     sale: {
-                        map: path + 'maps/sale/'+ lang +'.jpg',
+                        map: path + 'maps/'+ (houseSale['12'] ? 'sale' : 'no-sale') +'/'+ lang +'.jpg',
                         up: 3500
                     },
                     info: {
@@ -1435,7 +1434,8 @@ export default function ThreeD(setting,changeFloor2 ) {
 
     //получить позицию дома
     async function getPositionObjects(objects) {
-        await fetch(defaultPath + '/assets/static/position.json').then(response => response.json())
+        await fetch('/wp-content/themes/o2/assets/assets/static/position.json').then(response => response.json())
+        // await fetch(defaultPath + '/assets/static/position.json').then(response => response.json())
             .then(data => {
                 for (let type in data.tree) {
                     if (objects.treeConfig[type]) {
@@ -1466,10 +1466,8 @@ export default function ThreeD(setting,changeFloor2 ) {
     }
 
     function setJsonPos(datas) {
-        console.log(datas);
         let fd = new FormData();
         datas.forEach((data, i) => fd.append(i, JSON.stringify(data)));
-        console.log(fd);
         fetch('./writer.php', {
             method: 'post',
             body: fd,
