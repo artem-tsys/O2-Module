@@ -132,8 +132,8 @@ overflow: hidden}
 	height: 100%;
 	width: 100%;
 	z-index: 205;
+  transition: opacity 0.3s ease-in-out;
 	background: rgba(180,180,180,0.7);
-
 }
 .wrapper__first-info.active{
 	display: flex;
@@ -356,7 +356,7 @@ overflow: hidden}
 	transform: translate(-100%, -50%);
 	display: block;
 	width: 60vw;
-	background: rgba(255,255,255,0.8);
+	background: rgba(255,255,255,0.95);
 	z-index: 200;
 	transition: all 0.3s linear;
 }
@@ -401,6 +401,9 @@ overflow: hidden}
 .select-floor{
 	width: auto;
 	margin: 0 20px;
+}
+.hidden {
+  display: none;
 }
 
 @media only screen and (max-width: 1024px){
@@ -473,18 +476,19 @@ overflow: hidden}
 	}
 	.first-info table tr{
 		h3{
-			font-size: 18px;
+			font-size: 16px;
+      margin-bottom: 10px;
 		}
 		p{
-			font-size: 12px;
+			font-size: 11px;
 		}
 	}
 	.first-info table tr td:first-child img{
-		max-width: 80%;
-		max-height: 80%;
+		max-width: 90%;
+		max-height: 90%;
 	}
 	.first-info table tr td{
-		padding: 10px;
+		padding: 13px;
 	}
 }
 

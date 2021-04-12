@@ -74,7 +74,6 @@ let setting = {
     houseInfo : {
         house1: {
             sections: '1',
-            floors: 265,
             position: {x: 18683.695*ratio, y: 0, z: 7204.262*ratio},
         },
         house2: {
@@ -237,7 +236,7 @@ let setting = {
                 y: 10000,
                 z: 3500
             },
-            img: 'fon1.jpg',
+            img: path +'fon1.jpg',
         },
         windowCam: {
             cam1: {x: 19200, y: 3000, z: 5000},
@@ -292,7 +291,7 @@ let setting = {
             model: [{position: {x: -70, y: 25, z: 0}}]
         },
 
-        land: {
+        lands: {
             land_send: {
                 url: 'Obj/land/send',
                 repeat: true,
@@ -591,7 +590,7 @@ let setting = {
 };
 
 if(setting.type === "desktop"){
-    setting.objects.land.info = {
+    setting.objects.lands.info = {
         name: 'info',
         type: 'Basic',
         url: 'Obj/info',

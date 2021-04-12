@@ -618,35 +618,39 @@ window.addEventListener('load', function () {
     three.init(setting.config, setting.objects);
     $('#floor').on('click', hoverTooltip);
 
-    localStorage.removeItem('three-info');
-    if (localStorage.getItem('three-info') === null) {
-        $('.js-first-info').addClass('active');
-        localStorage.setItem('three-info', true);
-        $('.js-first-info__close').on('click', function () {
-            $('.js-first-info').removeClass('active');
-        })
-    }
+  $('.js-first-info__close').on('click', function () {
+    $('.js-first-info').removeClass('active');
+  });
+  $('.js-first-info__open').on('click', function () {
+    $('.js-first-info').addClass('active');
+  });
+    // localStorage.removeItem('three-info');
+  if (localStorage.getItem('three-info') === null) {
+      $('.js-first-info').addClass('active');
+      localStorage.setItem('three-info', true);
+  }
 });
 
-function changeFloor(floor, data){
+function changeFloor(floor, data, houseInfo){
+    three.controlsEnable(floor);
+    three.activeAnimate(floor);
     if(floor){
         $('.js-info__active').addClass('active');
         $('.js-treeD__plane').removeClass('active');
     } else {
-        getPlaneFloor(data.house, data.floor);
-        $('.js-info__hover').removeClass('active');
-        $('.js-info__active').removeClass('active');
+      getPlaneFloor(data.house, data.floor, houseInfo);
+      $('.js-info__hover').removeClass('active');
+      $('.js-info__active').removeClass('active');
     }
-    three.controlsEnable(floor);
-    three.activeAnimate(floor);
 }
-function getPlaneFloor(house, floor) {
+function getPlaneFloor(house, floor, houseInfo) {
     let data = "action=appsData"+"&floor="+floor+"&dom="+house;
     $.ajax({
         type: "POST",
         url: '/wp-admin/admin-ajax.php',
         data: data,
         success: function(response){
+            changeActiveButtonsFloor(house, floor, houseInfo);
             $('.js-add__apartment').html(response);
             $('#floor').on('mouseover', function () {
                 $('.apartment-tooltip').css({
@@ -662,34 +666,70 @@ function getPlaneFloor(house, floor) {
 
             // $('.apartmens-plan-wrap').html(response);
             $('.js-treeD__plane').addClass('active');
-            $('.plan-floor-appartment-link').on('click', function (event) {
-                event.preventDefault();
-                $('.apartment-tooltip').css({
-                    'opacity': 0, 'left': '-100%'
-                });
-                $('.js-treeD__plane').removeClass('active');
-                let data2 = "action=findAppId"+"&id="+$(this).attr('data-id')+"&type="+$(this).attr('data-type');
-                $.ajax({
-                    type: "POST",
-                    url: '/wp-admin/admin-ajax.php',
-                    data: data2,
-                    success: function (result) {
-                        $('.js-add__apartment').html(result);
-                        $('.js-treeD__plane').addClass('active');
-                        $('.js-back').on('click',function () {
-                            getPlaneFloor(house, floor);
-                        });
-                        $('.js-callback-form-3d').on('click', function () {
-                            $('.js-callback-form').trigger('click');
-                        })
-                    }
-                })
-            })
+            $('.plan-floor-appartment-link').on('click', (e) =>  getApartment(e, house, floor));
+            // $('.plan-floor-appartment-link').on('click', function (event) {
+            //     event.preventDefault();
+            //     $('.apartment-tooltip').css({
+            //         'opacity': 0, 'left': '-100%'
+            //     });
+            //     $('.js-treeD__plane').removeClass('active');
+            //     let data2 = "action=findAppId"+"&id="+$(this).attr('data-id')+"&type="+$(this).attr('data-type');
+            //     $.ajax({
+            //         type: "POST",
+            //         url: '/wp-admin/admin-ajax.php',
+            //         data: data2,
+            //         success: function (result) {
+            //             $('.js-add__apartment').html(result);
+            //             $('.js-treeD__plane').addClass('active');
+            //             $('.js-back').on('click',function () {
+            //                 getPlaneFloor(house, floor);
+            //             });
+            //             $('.js-callback-form-3d').on('click', function () {
+            //                 $('.js-callback-form').trigger('click');
+            //             })
+            //         }
+            //     })
+            // })
         },
         error: function(data) {
             console.log(data);
         }
     })
+}
+function getApartment(event, house, floor) {
+  event.preventDefault();
+  $('.apartment-tooltip').css({
+    'opacity': 0, 'left': '-100%'
+  });
+  $('.js-treeD__plane').removeClass('active');
+  let data2 = "action=findAppId"+"&id="+$(this).attr('data-id')+"&type="+$(this).attr('data-type');
+  $.ajax({
+    type: "POST",
+    url: '/wp-admin/admin-ajax.php',
+    data: data2,
+    success: function (result) {
+      $('.js-add__apartment').html(result);
+      $('.js-treeD__plane').addClass('active');
+      $('.js-back').on('click',function () {
+        getPlaneFloor(house, floor);
+      });
+      $('.js-callback-form-3d').on('click', function () {
+        $('.js-callback-form').trigger('click');
+      })
+    }
+  })
+}
+function changeActiveButtonsFloor(house, floor, houseInfo) {
+  if (floor <= 2) {
+    $('.js-change-floor__btn--prev').addClass('hidden');
+    $('.js-change-floor__btn--next').removeClass('hidden');
+  } else if (houseInfo['house'+house].floor <= floor) {
+    $('.js-change-floor__btn--next').addClass('hidden');
+    $('.js-change-floor__btn--prev').removeClass('hidden');
+  } else {
+    $('.js-change-floor__btn--next').removeClass('hidden');
+    $('.js-change-floor__btn--prev').removeClass('hidden');
+  }
 }
 function hoverTooltip(e) {
     if(e.target.tagName === 'polygon'){

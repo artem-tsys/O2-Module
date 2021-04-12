@@ -1,3 +1,4 @@
+import map from 'async';
 export default function ThreeD(setting,changeFloor2 ) {
     let self = this;
     let scene, camera, controls, renderer, intersects, pointObj,saleObj, defaultPositionCamera;
@@ -13,7 +14,9 @@ export default function ThreeD(setting,changeFloor2 ) {
     let points = [];
     let animateTimes = 0;
     let hover = true;
+    let currentFloor = null;
     const compass = $('.compas')[0];
+    let loadedSizeFiles = 0;
 
     let dir = new THREE.Vector3();
     let sph = new THREE.Spherical();
@@ -134,30 +137,35 @@ export default function ThreeD(setting,changeFloor2 ) {
 
         // document.getElementsByClassName('js-back')[0].addEventListener('click', back);
         buttonClose.addEventListener('click', closedInfo);
+        
+        
         $('.js-close__apart').on('click', () => {
-            changeFloor(true, intersects.userData)
+          currentFloor = null;
+          changeFloor(true, {}, houseInfo)
         });
         $('.js-info__button').on('click', function () {
           infoButton()
         });
+      $('.js-change-floor__btn--prev').on('click', function () {
+        currentFloor = currentFloor-1;
+        const data = {
+          ...intersects.userData,
+          floor: currentFloor,
+        };
+        changeFloor(false, data, houseInfo);
+      });
+      $('.js-change-floor__btn--next').on('click', function () {
+        currentFloor = currentFloor+1;
+        const data = {
+          ...intersects.userData,
+          floor: currentFloor,
+        };
+       changeFloor(false, data, houseInfo);
+      });
     };
 
     async function getHouse() {
-        // await fetch(defaultPath + '/assets/static/appartment.json').then(response => response.json()).then(datas => {
-        //     let data = datas;
-        //     // let data = JSON.parse(datas);
-        //     for (let key in data) {
-        //         for (let sec in data[key]) {
-        //             houseInfo['house' + data[key].dom][sec] = data[key][sec];
-        //         }
-        //     }
-        // })
-        // request for flats/apartments
-        await $.ajax({
-            url: '/wp-content/themes/o2/assets/appData.json',
-            // method:'POST',
-            // data: {action: 'dataJson'},
-        }).then(datas => {
+        await fetch(defaultPath + '/assets/static/appartment.json').then(response => response.json()).then(datas => {
             let data = datas;
             // let data = JSON.parse(datas);
             for (let key in data) {
@@ -166,6 +174,20 @@ export default function ThreeD(setting,changeFloor2 ) {
                 }
             }
         })
+        // request for flats/apartments
+        // await $.ajax({
+        //     url: '/wp-content/themes/o2/assets/appData.json',
+        //     // method:'POST',
+        //     // data: {action: 'dataJson'},
+        // }).then(datas => {
+        //     let data = datas;
+        //     // let data = JSON.parse(datas);
+        //     for (let key in data) {
+        //         for (let sec in data[key]) {
+        //             houseInfo['house' + data[key].dom][sec] = data[key][sec];
+        //         }
+        //     }
+        // })
     }
 
     function addWindow(pos) {
@@ -175,9 +197,9 @@ export default function ThreeD(setting,changeFloor2 ) {
         return Camera1;
     }
 
-    function cubeCamera() {
-        return new THREE.CubeTextureLoader().setPath(path + 'cubeCamera/').load(['px.jpeg', 'nx.jpeg', 'py.jpeg', 'ny.jpeg', 'pz.jpeg', 'nz.jpeg',]);
-    }
+    // function cubeCamera() {
+    //     return new THREE.CubeTextureLoader().setPath(path + 'cubeCamera/').load(['px.jpeg', 'nx.jpeg', 'py.jpeg', 'ny.jpeg', 'pz.jpeg', 'nz.jpeg',]);
+    // }
 
     function controlsFixed(active) {
         controls.enableZoom = active;
@@ -196,21 +218,68 @@ export default function ThreeD(setting,changeFloor2 ) {
 
 
 //create models
+  function getPathObjects(config) {
+    const result = Object.entries(config).flatMap(([key, value]) => {
+      if (key === 'treeConfig' || key === 'lands') {
+        return getPathObjects(value);
+      }
+      const keysPath = ['url', 'map', 'alphaMap'];
+      return keysPath.reduce((acc, key) => {
+        if (value.hasOwnProperty(key)) {
+          (key === 'url') ? acc.push(path + value[key]+ '.obj') : acc.push(value[key]);
+        }
+        return acc;
+      }, [])
+    });
+    return result;
+  }
+  
+  function getFileSize(path) {
+    const promise = new Promise((resolve, reject) => {
+      var sizeRequest = $.ajax({
+        type: "HEAD",
+        url: path,
+        success: function (response) {
+          var fileSize = parseInt(sizeRequest.getResponseHeader("Content-Length")) / 1048576;
+          resolve(fileSize)
+        },
+        error: (err) => {
+          reject(err);
+        },
+      });
+    });
+    return promise;
+  }
+  function getSizeFiles(fileConfig) {
+    const filePath = getPathObjects(fileConfig);
+    const promise = Promise.all(filePath.map(getFileSize));
+    promise.then((results) => {
+      const sizeFiles = results.reduce((acc, value) => {
+        if (acc >= 0) {
+          return acc + value;
+        }
+        return 0;
+      });
+      console.log(sizeFiles);
+    });
+  }
     async function load(objects, config) {
+        getSizeFiles(objects);
         createWater(objects.water);
         await getHouse();
         pointObj = await loaderObj({url: 'Obj/point'}, null);
         saleObj = await loaderObj({url: 'Obj/sale2'}, null);
+        
         await getPositionObjects(objects);
         addModel(config.houseSale);
 
         await loader(objects.landscape);
-        await repeat(objects.land);
+        await repeat(objects.lands);
         await repeat(objects.treeConfig);
-
-        renderer.render(scene, camera);
         await loader(objects.land_shadow);
-
+        renderer.render(scene, camera);
+      
+        console.log(282, loadedSizeFiles / 1048576);
         setTimeout(()=>{
             document.querySelector('.preloader').style.display = "none";
         }, 500);
@@ -268,19 +337,23 @@ export default function ThreeD(setting,changeFloor2 ) {
     }
 
     async function loaderMtl(config) {
-        let result;
-        const mtlLoader = new THREE.MTLLoader();
-        mtlLoader.setPath(path);
-        const materialUrl = config.url + ".mtl";
-        let promise = new Promise(resolve => {
-            mtlLoader.load(materialUrl, function (materials) {
-                materials.preload();
-                resolve(materials.materials);
-            });
-        });
+      let result;
+      let totalSize = 0;
+      const mtlLoader = new THREE.MTLLoader();
+      mtlLoader.setPath(path);
+      const materialUrl = config.url + ".mtl";
+      let promise = new Promise(resolve => {
+          mtlLoader.load(materialUrl, function (materials) {
+              loadedSizeFiles += totalSize;
+              materials.preload();
+              resolve(materials.materials);
+          }, (xhr) => {
+            totalSize = xhr.total;
+          });
+      });
 
-        await promise.then(data => result = data);
-        return result;
+      await promise.then(data => result = data);
+      return result;
     }
 
     async function loaderObj(config, texture, callback, group) {
@@ -288,11 +361,14 @@ export default function ThreeD(setting,changeFloor2 ) {
         const objLoader = new THREE.OBJLoader2();
         objLoader.setLogging(false, true);
         objLoader.setMaterials(texture);
-
+        let totalSize = 0;
         let promise = new Promise(resolve => {
             objLoader.load(path + config.url + '.obj', object => {
-                resolve(object.detail.loaderRootNode)
-            }, null, null, null, false);
+              loadedSizeFiles += totalSize;
+              resolve(object.detail.loaderRootNode)
+            }, (xhr) => {
+              totalSize = xhr.total;
+            }, null, null, false);
         });
 
         await promise.then(data => {
@@ -440,7 +516,7 @@ export default function ThreeD(setting,changeFloor2 ) {
     }
 
     function createRoom(config) {
-        const texture = loaderTexture(path + config.img);
+        const texture = loaderTexture(config.img);
         const materials = new THREE.MeshBasicMaterial({map: texture, side: THREE.BackSide});
         const geometry = new THREE.CylinderBufferGeometry(config.radius * ratio, config.radius * ratio, config.height, config.radialSegment, config.heightSegment, true);
 
@@ -451,14 +527,15 @@ export default function ThreeD(setting,changeFloor2 ) {
 
     function createWater(params) {
         let waterGeometry = new THREE.PlaneBufferGeometry(params.width * ratio, params.height * ratio);
+        const mapWater = loaderTexture('waternormals.jpg;');
         let water = new THREE.Water(waterGeometry, {
             color: params.color,
             scale: params.scale,
             flowDirection: new THREE.Vector2(params.flowX, params.flowY),
             reflectivity: params.reflectivity,
             flowSpeed: params.flowSpeed,
-            normalMap0: loaderTexture(path + 'waternormals.jpg'),
-            normalMap1: loaderTexture(path + 'waternormals.jpg'),
+            normalMap0: mapWater,
+            normalMap1: mapWater,
         });
 
         water.position.y = params.position.y * ratio;
@@ -1303,7 +1380,10 @@ export default function ThreeD(setting,changeFloor2 ) {
     }
 
     function loaderTexture(url) {
-        return new THREE.TextureLoader().load(url);
+      let totalSize = 0;
+        return new THREE.TextureLoader().load(url, (data) => {
+          loadedSizeFiles += totalSize;
+        });
     }
 
     function ModelRepeat(houseConfig, object, group, points, config) {
@@ -1332,8 +1412,6 @@ export default function ThreeD(setting,changeFloor2 ) {
             }
         };
         const model = object1.clone();
-
-        // console.log('modelConf',modelConf);
         model.position.set(configDefault.position.x, configDefault.position.y, configDefault.position.z);
         model.scale.set(configDefault.scale.x, configDefault.scale.y, configDefault.scale.z);
         model.rotation.set(configDefault.rotation.x, configDefault.rotation.y, configDefault.rotation.z);
@@ -1346,7 +1424,6 @@ export default function ThreeD(setting,changeFloor2 ) {
         let index = 0;
         let y = null;
         model.children.forEach( (floor,i) => {
-            // console.log(floor);
             if( floor.name.includes('Floor1') || floor.name.includes('floor1') || floor.name.includes('floor-1') || floor.name.includes('Floor-1')){
                 // model.remove(model.children[i])
                 y = i;
@@ -1368,8 +1445,6 @@ export default function ThreeD(setting,changeFloor2 ) {
         if (modelConf.point) {
             points.add(createPoint(modelConf, pointObj, 'point' ));
         }
-        // console.log(model);
-        // console.log(houseInfo['house' +model.userData.house]);
         if(modelConf.sale &&  houseInfo['house' +model.userData.house].dom ) {
             points.add(createPoint(modelConf, saleObj, 'sale' ));
         }
@@ -1434,16 +1509,16 @@ export default function ThreeD(setting,changeFloor2 ) {
 
     //получить позицию дома
     async function getPositionObjects(objects) {
-        await fetch('/wp-content/themes/o2/assets/assets/static/position.json').then(response => response.json())
-        // await fetch(defaultPath + '/assets/static/position.json').then(response => response.json())
+        // await fetch('/wp-content/themes/o2/assets/assets/static/position.json').then(response => response.json())
+        await fetch(defaultPath + '/assets/static/position.json').then(response => response.json())
             .then(data => {
                 for (let type in data.tree) {
                     if (objects.treeConfig[type]) {
                         objects.treeConfig[type].model = data.tree[type].model;
                     }
                 }
-                objects.land.fonar.model = data.fonar.model;
-                objects.land.paporotnik.model = data.paporotnik.model;
+                objects.lands.fonar.model = data.fonar.model;
+                objects.lands.paporotnik.model = data.paporotnik.model;
             });
     }
 
@@ -1700,7 +1775,6 @@ export default function ThreeD(setting,changeFloor2 ) {
     //     infoButtonEl.disabled = true;
     //     // change.house = true;
     //     controlsFixed(false);
-    //     debugger
     //     // for (let key in houses){houses[key].wrapp.visible = false;}
     //     if (+houseInfo['house' + houseNum.house].secs === 1) {
     //         changeFloorWrapp(houses['house' + houseNum.house].section1.children, 'floor', true);
@@ -1756,8 +1830,9 @@ export default function ThreeD(setting,changeFloor2 ) {
     }
 
     function eventClickInfoFloor() {
-        controlsFixed(false);
-        changeFloor(false, intersects.userData);
+      controlsFixed(false);
+      currentFloor = intersects.userData.floor;
+      changeFloor(false, intersects.userData, houseInfo);
     }
 
     function changeMaterialOpacity(intersects, element) {
