@@ -137,8 +137,8 @@ export default function ThreeD(setting,changeFloor2 ) {
 
         // document.getElementsByClassName('js-back')[0].addEventListener('click', back);
         buttonClose.addEventListener('click', closedInfo);
-        
-        
+
+
         $('.js-close__apart').on('click', () => {
           currentFloor = null;
           changeFloor(true, {}, houseInfo)
@@ -165,21 +165,7 @@ export default function ThreeD(setting,changeFloor2 ) {
     };
 
     async function getHouse() {
-        await fetch(defaultPath + '/assets/static/appartment.json').then(response => response.json()).then(datas => {
-            let data = datas;
-            // let data = JSON.parse(datas);
-            for (let key in data) {
-                for (let sec in data[key]) {
-                    houseInfo['house' + data[key].dom][sec] = data[key][sec];
-                }
-            }
-        })
-        // request for flats/apartments
-        // await $.ajax({
-        //     url: '/wp-content/themes/o2/assets/appData.json',
-        //     // method:'POST',
-        //     // data: {action: 'dataJson'},
-        // }).then(datas => {
+        // await fetch(defaultPath + '/assets/static/appartment.json').then(response => response.json()).then(datas => {
         //     let data = datas;
         //     // let data = JSON.parse(datas);
         //     for (let key in data) {
@@ -188,6 +174,20 @@ export default function ThreeD(setting,changeFloor2 ) {
         //         }
         //     }
         // })
+        // request for flats/apartments
+        await $.ajax({
+            url: '/wp-content/themes/o2/assets/appData.json',
+            // method:'POST',
+            // data: {action: 'dataJson'},
+        }).then(datas => {
+            let data = datas;
+            // let data = JSON.parse(datas);
+            for (let key in data) {
+                for (let sec in data[key]) {
+                    houseInfo['house' + data[key].dom][sec] = data[key][sec];
+                }
+            }
+        })
     }
 
     function addWindow(pos) {
@@ -233,7 +233,7 @@ export default function ThreeD(setting,changeFloor2 ) {
     });
     return result;
   }
-  
+
   function getFileSize(path) {
     const promise = new Promise((resolve, reject) => {
       var sizeRequest = $.ajax({
@@ -264,12 +264,12 @@ export default function ThreeD(setting,changeFloor2 ) {
     });
   }
     async function load(objects, config) {
-        getSizeFiles(objects);
+        // getSizeFiles(objects);
         createWater(objects.water);
         await getHouse();
         pointObj = await loaderObj({url: 'Obj/point'}, null);
         saleObj = await loaderObj({url: 'Obj/sale2'}, null);
-        
+
         await getPositionObjects(objects);
         addModel(config.houseSale);
 
@@ -278,10 +278,10 @@ export default function ThreeD(setting,changeFloor2 ) {
         await repeat(objects.treeConfig);
         await loader(objects.land_shadow);
         renderer.render(scene, camera);
-      
-        console.log(282, loadedSizeFiles / 1048576);
+
+        // console.log(282, loadedSizeFiles / 1048576);
         setTimeout(()=>{
-            document.querySelector('.preloader').style.display = "none";
+          document.querySelector('.preloader').style.display = "none";
         }, 500);
 
         cam.cam1.update(renderer, scene);
@@ -1002,7 +1002,7 @@ export default function ThreeD(setting,changeFloor2 ) {
                         up: 3000
                     },
                     sale: {
-                        map: path + 'maps/'+ (houseSale['8']) ? 'sale' : 'no-sale' +'/'+ lang +'.jpg',
+                        map: path + 'maps/'+ (houseSale['8'] ? 'sale' : 'no-sale') +'/'+ lang +'.jpg',
                         up: 3500
                     },
                     info: {
@@ -1381,9 +1381,9 @@ export default function ThreeD(setting,changeFloor2 ) {
 
     function loaderTexture(url) {
       let totalSize = 0;
-        return new THREE.TextureLoader().load(url, (data) => {
-          loadedSizeFiles += totalSize;
-        });
+      return new THREE.TextureLoader().load(url, (data) => {
+        loadedSizeFiles += totalSize;
+      });
     }
 
     function ModelRepeat(houseConfig, object, group, points, config) {
@@ -1509,8 +1509,8 @@ export default function ThreeD(setting,changeFloor2 ) {
 
     //получить позицию дома
     async function getPositionObjects(objects) {
-        // await fetch('/wp-content/themes/o2/assets/assets/static/position.json').then(response => response.json())
-        await fetch(defaultPath + '/assets/static/position.json').then(response => response.json())
+        await fetch('/wp-content/themes/o2/assets/assets/static/position.json').then(response => response.json())
+        // await fetch(defaultPath + '/assets/static/position.json').then(response => response.json())
             .then(data => {
                 for (let type in data.tree) {
                     if (objects.treeConfig[type]) {

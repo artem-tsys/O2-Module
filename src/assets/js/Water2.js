@@ -16,7 +16,6 @@ THREE.Water = function ( geometry, options ) {
 	var scope = this;
 
 	options = options || {};
-console.log(options);
 	var color = ( options.color !== undefined ) ? new THREE.Color( options.color ) : new THREE.Color( 0xFFFFFF );
 	var textureWidth = options.textureWidth || 512;
 	var textureHeight = options.textureHeight || 512;
@@ -30,8 +29,8 @@ console.log(options);
 	var textureLoader = new THREE.TextureLoader();
 
 	var flowMap = options.flowMap || undefined;
-	var normalMap0 = options.normalMap0 || textureLoader.load( 'app/img/waternormals.jpg' );
-	var normalMap1 = options.normalMap1 || textureLoader.load( 'app/img/waternormals.jpg' );
+	var normalMap0 = options.normalMap0 || textureLoader.load( '/wp-content/themes/o2/assets/assets/img/3dModule/waternormals.jpg' );
+	var normalMap1 = options.normalMap1 || textureLoader.load( '/wp-content/themes/o2/assets/assets/img/3dModule/waternormals.jpg' );
 	// var normalMap0 = options.normalMap0 || textureLoader.load( 'app/img/Water_1_M_Normal.jpg' );
 	// var normalMap1 = options.normalMap1 || textureLoader.load( 'app/img/Water_2_M_Normal.jpg' );
 
