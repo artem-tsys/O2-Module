@@ -702,7 +702,9 @@ function getApartment(event, house, floor) {
     'opacity': 0, 'left': '-100%'
   });
   $('.js-treeD__plane').removeClass('active');
-  let data2 = "action=findAppId"+"&id="+$(this).attr('data-id')+"&type="+$(this).attr('data-type');
+    console.log(event.currentTarget);
+  const { id, type } =event.currentTarget.dataset;
+  let data2 = "action=findAppId"+"&id="+id+"&type="+type;
   $.ajax({
     type: "POST",
     url: '/wp-admin/admin-ajax.php',
