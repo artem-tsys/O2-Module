@@ -51,9 +51,9 @@ export default function ThreeD(setting,changeFloor2 ) {
     let infoButton = function () {};
 
     function checkLanguage() {
-        if(window.location.pathname === '/en/3d/'){
+        if(window.location.pathname.includes('/en/')){
             return 'en'
-        } else if(window.location.pathname === '/ru/3d/'){
+        } else if(window.location.pathname.includes('/ru/')){
             return 'ru'
         } else {
             return 'ua'
