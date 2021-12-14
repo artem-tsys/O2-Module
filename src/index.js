@@ -20,17 +20,17 @@ window.addEventListener('load', function () {
     three.init(setting.config, setting.objects);
     $('#floor').on('click', hoverTooltip);
 
-  $('.js-first-info__close').on('click', function () {
-    $('.js-first-info').removeClass('active');
-  });
-  $('.js-first-info__open').on('click', function () {
-    $('.js-first-info').addClass('active');
-  });
-    // localStorage.removeItem('three-info');
-  if (localStorage.getItem('three-info') === null) {
+    $('.js-first-info__close').on('click', function () {
+      $('.js-first-info').removeClass('active');
+    });
+    $('.js-first-info__open').on('click', function () {
       $('.js-first-info').addClass('active');
-      localStorage.setItem('three-info', true);
-  }
+    });
+      // localStorage.removeItem('three-info');
+    if (localStorage.getItem('three-info') === null) {
+        $('.js-first-info').addClass('active');
+        localStorage.setItem('three-info', true);
+    }
 });
 
 function changeFloor(floor, data, houseInfo){

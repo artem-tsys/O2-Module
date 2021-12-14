@@ -2,7 +2,7 @@ import map from 'async';
 export default function ThreeD(setting,changeFloor2 ) {
     let self = this;
     let scene, camera, controls, renderer, intersects, pointObj,saleObj, defaultPositionCamera;
-    let {defaultPath , path, ratio=1, type='desctop',info, houseInfo,langText} = setting;
+    let {defaultPath , path, ratio=1, type='desctop',info, houseInfo, langText, config: { houseSale } } = setting;
     let changeFloor = changeFloor2;
     let animationFlags = false;
     let lang = checkLanguage();
@@ -1733,12 +1733,13 @@ export default function ThreeD(setting,changeFloor2 ) {
                 let houseNum =  checkElement('return');
 
                 lastActiveFloor = changeMaterialOpacity(intersects,lastActiveFloor);
+                
                 if(houseInfo['house' + intersects.parent.userData.house].dom){
                     setInfo('info__active','section', houseNum.house, houseNum.section, houseInfo['house' + houseNum.house].sections[houseNum.section].floors, houseInfo['house' + houseNum.house].sections[houseNum.section].rooms);
                 } else {
                     setInfo('info__active','section', houseNum.house);
                 }
-                infoButton = eventClickInfoSection.bind(this,intersects, 'touch');
+                infoButton = eventClickInfoSection.bind(this, intersects, 'touch');
             }
             else if (!change.floor && (activeObject.obj === '' || activeObject.obj.parent.uuid === intersects.parent.uuid || +activeObject.obj.userData.house === +intersects.parent.userData.house)) {
                 infoButtonEl.disabled = false;
@@ -1794,6 +1795,9 @@ export default function ThreeD(setting,changeFloor2 ) {
     // }
 
     function eventClickInfoSection(intersects, event) {
+        if (houseSale && !houseSale[intersects.userData.house]) {
+          return null;
+        }
         controlsFixed(false);
         changeFloorWrapp(intersects.parent.children, 'floor', true);
 

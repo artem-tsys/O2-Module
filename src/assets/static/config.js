@@ -1,6 +1,8 @@
 let defaultPath = '';
-const mobile = '/assets/img/3dModuleMobile/',
-    desctop = '/assets/img/3dModule/';
+// const mobile = '/assets/img/3dModuleMobile/',
+//     desctop = '/assets/img/3dModule/';
+const mobile = '/wp-content/themes/o2/assets/assets/img/3dModuleMobile/',
+  desctop = '/wp-content/themes/o2/assets/assets/img/3dModule/';
 let ratio = 1, type = "desktop",path = defaultPath + desctop;
 
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
@@ -249,7 +251,7 @@ let setting = {
         houseSale: {
         1: false,
         2: false,
-        3: true,
+        3: false,
         4: true,
         5: true,
         6: true,
