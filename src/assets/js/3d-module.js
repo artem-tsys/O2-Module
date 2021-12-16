@@ -146,22 +146,22 @@ export default function ThreeD(setting,changeFloor2 ) {
         $('.js-info__button').on('click', function () {
           infoButton()
         });
-      $('.js-change-floor__btn--prev').on('click', function () {
-        currentFloor = currentFloor-1;
-        const data = {
-          ...intersects.userData,
-          floor: currentFloor,
-        };
-        changeFloor(false, data, houseInfo);
-      });
-      $('.js-change-floor__btn--next').on('click', function () {
-        currentFloor = currentFloor+1;
-        const data = {
-          ...intersects.userData,
-          floor: currentFloor,
-        };
-       changeFloor(false, data, houseInfo);
-      });
+        $('.js-change-floor__btn--prev').on('click', function () {
+          currentFloor = currentFloor-1;
+          const data = {
+            ...intersects.userData,
+            floor: currentFloor,
+          };
+          changeFloor(false, data, houseInfo);
+        });
+        $('.js-change-floor__btn--next').on('click', function () {
+          currentFloor = currentFloor+1;
+          const data = {
+            ...intersects.userData,
+            floor: currentFloor,
+          };
+         changeFloor(false, data, houseInfo);
+        });
     };
 
     async function getHouse() {
@@ -1795,7 +1795,10 @@ export default function ThreeD(setting,changeFloor2 ) {
     // }
 
     function eventClickInfoSection(intersects, event) {
-        if (houseSale && !houseSale[intersects.userData.house]) {
+        console.log(intersects);
+        console.log(houseSale);
+        if (!houseSale || !houseSale[intersects.userData.house]) {
+          console.log('null');
           return null;
         }
         controlsFixed(false);

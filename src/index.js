@@ -7,7 +7,6 @@ import "./assets/js/OBJLoader2"
 import "./assets/js/Reflector"
 import "./assets/js/Refractor"
 import "./assets/js/Water2"
-// import setting from "./assets/js/config"
 
 import './assets/css/main.css';
 import './assets/sass/main.scss';
@@ -26,7 +25,6 @@ window.addEventListener('load', function () {
     $('.js-first-info__open').on('click', function () {
       $('.js-first-info').addClass('active');
     });
-      // localStorage.removeItem('three-info');
     if (localStorage.getItem('three-info') === null) {
         $('.js-first-info').addClass('active');
         localStorage.setItem('three-info', true);
@@ -47,6 +45,10 @@ function changeFloor(floor, data, houseInfo){
 }
 function getPlaneFloor(house, floor, houseInfo) {
     let data = "action=appsData"+"&floor="+floor+"&dom="+house;
+    const btnNext = $('.js-change-floor__btn--next');
+    const btnPrev = $('.js-change-floor__btn--prev');
+    btnNext.css('pointer-events', 'none');
+    btnPrev.css('pointer-events', 'none');
     $.ajax({
         type: "POST",
         url: '/wp-admin/admin-ajax.php',
@@ -56,19 +58,19 @@ function getPlaneFloor(house, floor, houseInfo) {
             $('.js-add__apartment').html(response);
             $('#floor').on('mouseover', function () {
                 $('.apartment-tooltip').css({
-                    'opacity': 1, 'left': '0px'
+                    'opacity': 1, 'pointer-events': 'painted', 'left': '0px'
                 })
             });
             $('#floor').on('mousemove', hoverTooltip);
             $('#floor').on('mouseout', function () {
                 $('.apartment-tooltip').css({
-                    'opacity': 0, 'left': '-100%'
+                    'opacity': 0, 'pointer-events': 'none', 'left': '-100%'
                 })
             });
-
-            // $('.apartmens-plan-wrap').html(response);
+            btnNext.css('pointer-events', 'painted');
+            btnPrev.css('pointer-events', 'painted');
             $('.js-treeD__plane').addClass('active');
-            $('.plan-floor-appartment-link').on('click', (e) =>  getApartment(e, house, floor));
+            $('.plan-floor-appartment-link').on('click', (e) =>  getApartment(e, house, floor, houseInfo));
             // $('.plan-floor-appartment-link').on('click', function (event) {
             //     event.preventDefault();
             //     $('.apartment-tooltip').css({
@@ -98,10 +100,10 @@ function getPlaneFloor(house, floor, houseInfo) {
         }
     })
 }
-function getApartment(event, house, floor) {
+function getApartment(event, house, floor, houseInfo) {
   event.preventDefault();
   $('.apartment-tooltip').css({
-    'opacity': 0, 'left': '-100%'
+    'opacity': 0, 'pointer-events': 'none', 'left': '-100%'
   });
   $('.js-treeD__plane').removeClass('active');
 
@@ -115,7 +117,8 @@ function getApartment(event, house, floor) {
       $('.js-add__apartment').html(result);
       $('.js-treeD__plane').addClass('active');
       $('.js-back').on('click',function () {
-        getPlaneFloor(house, floor);
+        
+        getPlaneFloor(house, floor, houseInfo);
       });
       $('.js-callback-form-3d').on('click', function () {
         $('.js-callback-form').trigger('click');
